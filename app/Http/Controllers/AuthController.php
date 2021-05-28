@@ -49,7 +49,7 @@ class AuthController extends Controller
             // If user does not exist or password is incorrect
             if (!$user || !Hash::check($request->password, $user->password)) {
                 $res['error'] = 'No existe el usuraio o la contraseña';
-                return response($res, 200);
+                return response($res, 403);
             }
 
             // Create the token
@@ -58,7 +58,7 @@ class AuthController extends Controller
             // Return the response
             $res['user'] = $user;
             $res['token'] = $token;
-            return response($res, 400);
+            return response($res, 200);
 
         } catch (Exception $e) {
             $res['error'] = 'Hubo un error en la base de datos, inténtelo más tarde.';
