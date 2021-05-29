@@ -32,9 +32,8 @@ export default {
 
             // Check if request was ok
             if (response.ok) {
-                this.$store.commit('setUser', responseData.user); // Remove user from state
-                localStorage.setItem('token', `Bearer ${responseData.token}`); // Remove token from storage
-                localStorage.setItem('user', JSON.stringify(responseData.user)); // Remove user from storage
+                this.$store.commit('setUser', responseData.user); // Set user in state
+                localStorage.setItem('token', `Bearer ${responseData.token}`); // Save token in storage
             } else {
                 console.log(responseData.error);
             }  

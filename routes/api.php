@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:sanctum', 'checkUserRole']], function () {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Auth routes
     Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/authenticated', [AuthController::class, 'getAuthenticated']);
 });
 
 // Public routes

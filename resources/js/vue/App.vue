@@ -8,14 +8,20 @@ export default {
     this.checkAuthentication();
   },
   methods: {
-    checkAuthentication() {
-      const user = localStorage.getItem('user');
+    async checkAuthentication() {
       const token = localStorage.getItem('token');
 
-      if (token !== undefined) {
-        this.$store.commit('setUser', JSON.parse(user));
-      } else {
+      if (token !== undefined && token) {
+        console.log(token);
+        const response = await fetch('/api/authenticated', {
+          headers: {
+            Authorization: token
+          }
+        });
+        const responseData =  await response.json();
+        this.$store.commit('setUser', responseData);
       }
+      this.$store.commit('changeAuthenticatedUserFlag');
     }
   }
 }

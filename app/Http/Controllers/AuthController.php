@@ -81,4 +81,15 @@ class AuthController extends Controller
 
 
     }
+
+    public function getAuthenticated() {
+        try {
+            $authenticatedUser = auth()->user();
+            return response($authenticatedUser, 200);
+        } catch (Exception $e) {
+            $res = [];
+            $res['error'] = 'Hubo un error en la base de datos, intentelo mas tarde';
+            return response($res, 400);
+        }
+    }
 }

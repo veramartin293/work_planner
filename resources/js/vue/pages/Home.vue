@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="$store.getters.authenticatedUserFlag">
         <the-header></the-header>
         <form-auth v-if="!$store.getters.user"></form-auth>
     </div>

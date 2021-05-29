@@ -14948,18 +14948,63 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   created: function created() {
     this.checkAuthentication();
   },
   methods: {
     checkAuthentication: function checkAuthentication() {
-      var user = localStorage.getItem('user');
-      var token = localStorage.getItem('token');
+      var _this = this;
 
-      if (token !== undefined) {
-        this.$store.commit('setUser', JSON.parse(user));
-      } else {}
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var token, response, responseData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                token = localStorage.getItem('token');
+
+                if (!(token !== undefined && token)) {
+                  _context.next = 10;
+                  break;
+                }
+
+                console.log(token);
+                _context.next = 5;
+                return fetch('/api/authenticated', {
+                  headers: {
+                    Authorization: token
+                  }
+                });
+
+              case 5:
+                response = _context.sent;
+                _context.next = 8;
+                return response.json();
+
+              case 8:
+                responseData = _context.sent;
+
+                _this.$store.commit('setUser', responseData);
+
+              case 10:
+                _this.$store.commit('changeAuthenticatedUserFlag');
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     }
   }
 });
@@ -15024,12 +15069,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 // Check if request was ok
                 if (response.ok) {
-                  _this.$store.commit('setUser', responseData.user); // Remove user from state
+                  _this.$store.commit('setUser', responseData.user); // Set user in state
 
 
-                  localStorage.setItem('token', "Bearer ".concat(responseData.token)); // Remove token from storage
-
-                  localStorage.setItem('user', JSON.stringify(responseData.user)); // Remove user from storage
+                  localStorage.setItem('token', "Bearer ".concat(responseData.token)); // Save token in storage
                 } else {
                   console.log(responseData.error);
                 }
@@ -15079,20 +15122,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 // Perform the request
                 token = localStorage.getItem('token');
-                console.log(token);
-                _context.next = 4;
+                _context.next = 3;
                 return fetch('/api/logout', {
                   headers: {
                     Authorization: token
                   }
                 });
 
-              case 4:
+              case 3:
                 response = _context.sent;
-                _context.next = 7;
+                _context.next = 6;
                 return response.json();
 
-              case 7:
+              case 6:
                 responseData = _context.sent;
 
                 // Check if request was ok
@@ -15100,14 +15142,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.$store.commit('setUser', null); // Remove user from state
 
 
-                  localStorage.removeItem('user'); // Remove user from storage
-
                   localStorage.removeItem('token'); // Remove token from storage
                 } else {
                   console.log(responseData);
                 }
 
-              case 9:
+              case 8:
               case "end":
                 return _context.stop();
             }
@@ -15284,14 +15324,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
+var _hoisted_1 = {
+  key: 0
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_the_header = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("the-header");
 
   var _component_form_auth = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("form-auth");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_the_header), !_ctx.$store.getters.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_form_auth, {
+  return _ctx.$store.getters.authenticatedUserFlag ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_the_header), !_ctx.$store.getters.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_form_auth, {
     key: 0
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 
 /***/ }),
@@ -15390,16 +15433,23 @@ __webpack_require__.r(__webpack_exports__);
 
 var store = (0,vuex__WEBPACK_IMPORTED_MODULE_0__.createStore)({
   state: {
-    user: null
+    user: null,
+    authenticatedUserFlag: false
   },
   mutations: {
     setUser: function setUser(state, user) {
       state.user = user;
+    },
+    changeAuthenticatedUserFlag: function changeAuthenticatedUserFlag(state) {
+      state.authenticatedUserFlag = !state.authenticatedUserFlag;
     }
   },
   getters: {
     user: function user(state) {
       return state.user;
+    },
+    authenticatedUserFlag: function authenticatedUserFlag(state) {
+      return state.authenticatedUserFlag;
     }
   }
 });

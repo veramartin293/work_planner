@@ -14,7 +14,6 @@ export default {
         async logout() {
             // Perform the request
             const token = localStorage.getItem('token');
-            console.log(token);
             const response = await fetch('/api/logout', {
                 headers: {
                     Authorization: token
@@ -25,7 +24,6 @@ export default {
             // Check if request was ok
             if (response.ok) {
                 this.$store.commit('setUser', null); // Remove user from state
-                localStorage.removeItem('user'); // Remove user from storage
                 localStorage.removeItem('token'); // Remove token from storage
             } else {
                 console.log(responseData);
