@@ -12,7 +12,6 @@ export default {
       const token = localStorage.getItem('token');
 
       if (token !== undefined && token) {
-        console.log(token);
         const response = await fetch('/api/authenticated', {
           headers: {
             Authorization: token
@@ -39,5 +38,8 @@ html {
   box-sizing: inherit;
 }
 
+img {
+  display: block;
+}
 
 </style>

@@ -36,7 +36,7 @@ class OrderController extends Controller
     {       
         try {
             // Store the file
-            $filePath = $request->file('logo')->store('order_images');
+            $filePath = $request->file('logo')->store('order_images', 'public');
 
             // Create the order
             $order = new Order;
@@ -73,7 +73,7 @@ class OrderController extends Controller
                 return response($order, 200);
             } else {
                 $res = ['error' => 'La orden solicitada no existe.'];
-                return response($res, 205);
+                return response($res, 404);
             }
         } catch(Exception $e) {
             $res = ['error' => 'Hubo un problema con la base de datos, intentelo más tarde.'];
