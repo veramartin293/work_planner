@@ -1,9 +1,9 @@
 <template>
     <header class="header">
-        <h1>work planner</h1>
+        <h1 class="header__title">work planner</h1>
         <div v-if="$store.getters.user" class="header__user-info">
-            <p>{{ $store.getters.user.name }}</p>
-            <button @click="logout">Cerrar sesión</button>
+            <p><strong>{{ $store.getters.user.name }}</strong></p>
+            <button class="btn-logout" @click="logout">Cerrar sesión</button>
         </div>
     </header>
 </template>
@@ -32,3 +32,35 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 50px;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    text-transform: capitalize;
+}
+
+.btn-logout {
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    transform: scale(1.1);
+}
+
+.header__user-info {
+    display: flex;
+    align-items: center;
+}
+
+.header__user-info p {
+    margin-right: 10px;
+    font-size: 1.2em;
+    text-transform: capitalize;
+}
+</style>

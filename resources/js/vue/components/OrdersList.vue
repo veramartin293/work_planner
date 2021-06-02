@@ -1,8 +1,10 @@
 <template>
     <div>
-        <h1>Orders List</h1>
-        <order-card v-for="order in orders" :key="order.id"
-        :order="order"></order-card>
+        <h1>Lista De Ordenes</h1>
+        <div class="order-list-container">
+            <order-card v-for="order in orders" :key="order.id"
+            :order="order"></order-card>
+        </div>
     </div>
 </template>
 
@@ -35,3 +37,14 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+h1 {
+    padding: 0px 0px 50px 0px;
+    text-align: center;
+}
+.order-list-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+</style>
