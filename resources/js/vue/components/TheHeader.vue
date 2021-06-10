@@ -49,10 +49,6 @@ export default {
     transition: all 0.3s ease;
 }
 
-.btn-logout:hover {
-    transform: scale(1.1);
-}
-
 .header__user-info {
     display: flex;
     align-items: center;

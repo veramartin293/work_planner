@@ -63,6 +63,8 @@ button {
 
 button:hover {
   cursor: pointer;
+  background-color: black;
+  color: white;
 }
 
 img {
