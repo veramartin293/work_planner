@@ -54,6 +54,17 @@ a {
   color: inherit;
 }
 
+img {
+  display: block;
+}
+
+section {
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* Buttons */
+
 button {
   padding: 5px 5px;
   background: white;
@@ -65,15 +76,6 @@ button:hover {
   cursor: pointer;
   background-color: black;
   color: white;
-}
-
-img {
-  display: block;
-}
-
-section {
-  width: 80%;
-  margin: 0 auto;
 }
 
 .btn-blue {
@@ -99,4 +101,26 @@ section {
   color: red;
   border-color: red;
 }
+
+/* Forms */
+
+.form-field {
+  margin-bottom: 10px;
+}
+
+.form-error {
+  color: red;
+}
+
+input:not([type=checkbox]), select {
+  display: block;
+  width: 100%;
+  height: 40px;
+}
+
+label {
+  display: block;
+  margin-bottom: 3px;
+}
 </style>
+

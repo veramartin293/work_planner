@@ -40,6 +40,7 @@ class OrderRequest extends FormRequest
             'typography.required' => 'La tipografía es obligatoria',
             'colors.required' => 'Los colores son obligatorios',
             'logo.required' => 'El logotipo es obligatorio',
+            'logo.file' => 'El logotipo debe ser un archivo válido',
             'date.required' => 'La fecha es obligatoria',
             'is_in_progress.required' => 'El estatus (is_in_progress) del equipo es obligatorio'
         ];

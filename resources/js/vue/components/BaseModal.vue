@@ -32,7 +32,7 @@ export default {
 
 .modal-content {
     background-color: white;
-    width: 40%;
+    width: 30%;
     margin: 0 auto;
     padding: 20px 40px;
 }

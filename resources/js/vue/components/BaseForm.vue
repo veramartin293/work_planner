@@ -3,7 +3,7 @@
         <slot name="form-legend"></slot>
         <slot name="form-body"></slot>
         <div class="form-actions">
-            <button>submit</button>
+            <button @click="submitForm">submit</button>
             <button>cancel</button>
         </div>
     </form>
@@ -11,7 +11,11 @@
 
 <script>
 export default {
-    
+    methods: {
+        submitForm() {
+            this.$emit('submitClicked');
+        }
+    }
 }
 </script>
 
