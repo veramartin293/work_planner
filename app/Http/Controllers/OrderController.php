@@ -6,6 +6,7 @@ use App\Models\Order;
 use Illuminate\Auth\Events\Validated;
 // use Illuminate\Http\Request;
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\OrderUpdateRequest;
 use Exception;
 
 class OrderController extends Controller
@@ -89,7 +90,7 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(OrderRequest $request, $id)
+    public function update(OrderUpdateRequest $request, $id)
     {
         try {
             // Get the order
@@ -100,7 +101,7 @@ class OrderController extends Controller
                 $order->team_name = $request->team_name;
                 $order->typography = $request->typography;
                 $order->colors = $request->colors;
-                $order->logo = $request->logo;
+                // $order->logo = $request->logo;
                 $order->date = $request->date;
                 $order->is_in_progress = $request->is_in_progress;
 
@@ -110,7 +111,7 @@ class OrderController extends Controller
                 return response($order, 200);
             } else {
                 $res = ['error' => 'La orden solicitada no existe.'];
-                return response($res, 204);
+                return response($res, 200);
             }
         } catch (Exception $e) {
             $res = ['error' => 'Hubo un problema con la base de datos, intentelo más tarde.'];

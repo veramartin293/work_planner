@@ -3,8 +3,8 @@
         <slot name="form-legend"></slot>
         <slot name="form-body"></slot>
         <div class="form-actions">
-            <button @click="submitForm">submit</button>
-            <button>cancel</button>
+            <button @click="submitForm">guardar</button>
+            <button @click="cancelForm">cancelar</button>
         </div>
     </form>
 </template>
@@ -14,6 +14,9 @@ export default {
     methods: {
         submitForm() {
             this.$emit('submitClicked');
+        },
+        cancelForm() {
+            this.$emit('formCanceled');
         }
     }
 }

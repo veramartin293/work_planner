@@ -6,30 +6,31 @@
                 <p>Ver detalle</p>
             </router-link>
         </div>
+
+        <!-- position absolute elements -->
         <p class="order-card__date">
             {{order.date}}
         </p>
-        <!-- <div class="order-card__image">
-            <img :src="`/storage/${order.logo}`" alt="Image not found">
+
+        <div class="order-card__actions">
+            <button @click="editOrder" class="btn-blue">editar</button>
+            <button @click="deleteOrder" class="btn-red">eliminar</button>
         </div>
-        <div class="order-card__info">
-            <h3>{{order.team_name}}</h3>
-            <p>{{order.date}}</p>  
-            <router-link :to="`/orders/${order.id}`">Ver detalle</router-link>          
-        </div> -->
-        <!-- <div class="order-card__specs">
-            <img :src="`/storage/${order.logo}`" alt="">
-            <p>Typography: {{order.typography}}</p>
-            <p>Colors: {{order.colors}}</p>
-            <p>In progress: {{order.is_in_progress}}</p>
-            <router-link :to="`/orders/${order.id}`">Ver detalle</router-link>
-        </div> -->
+
     </div>
 </template>
 
 <script>
 export default {
-    props: ['order']
+    props: ['order'],
+    methods: {
+        editOrder() {
+            this.$emit('editClicked', this.order);
+        },
+        deleteOrder() {
+            this.$emit('deleteClicked', this.order);
+        }
+    }
 }
 </script>
 
@@ -69,5 +70,11 @@ export default {
     background-color: rgba(255,255,255,0.7);
     position: absolute;
     padding: 2px 5px;
+}
+
+.order-card__actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 </style>
