@@ -20,7 +20,7 @@
             </div>
          </div>
 
-        <div class="order-detail-uniforms" v-if="orderUniforms.length !== 0">
+        <div class="order-detail-uniforms">
             <div class="order-detail-uniforms__header">
                 <h2>Uniformes de la orden</h2>
                 <button @click="addUniform">Agregar nuevo</button>
@@ -39,7 +39,7 @@
                     <td>{{ uniform.size }}</td>
                     <td>
                         <button class="btn-blue" @click="editUniform(uniform)">Editar</button>
-                        <button class="btn-red">Eliminar</button>
+                        <button class="btn-red" @click="deleteUniform(uniform)">Eliminar</button>
                     </td>
                 </tr>
             </table>
@@ -152,6 +152,15 @@ export default {
             this.showForm = true;
             this.previousUniform = JSON.parse(JSON.stringify(uniform));
         },
+        deleteUniform(uniform) {
+            performApiCall(`/api/uniforms/${uniform.id}`, 'DELETE', true, {})
+            .then(response => {
+                if (response.id) {
+                    const uniformIndex = this.orderUniforms.findIndex(el => el.id === response.id);
+                    this.orderUniforms.splice(uniformIndex, 1);
+                }
+            })
+        },
         cancelForm() {
             this.showForm = false;
             this.resetUniformValues();
@@ -164,7 +173,7 @@ export default {
         },
         resetUniformValues() {
             this.uniform = {
-                order_id: null,
+                order_id: this.order.id,
                 legend: '',
                 number: '',
                 size: ''
@@ -182,7 +191,9 @@ export default {
             .then(response => {
                 if (response.id) {
                     this.orderUniforms.push(this.uniform);
-                    this.showForm = false;
+                    if (this.formMode === 'edit') {
+                        this.showForm = false;
+                    }
                     this.resetUniformValues();
                 } else if (response.errors) {
                     this.formErrors = response.errors;
