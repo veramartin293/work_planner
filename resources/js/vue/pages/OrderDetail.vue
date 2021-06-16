@@ -20,9 +20,12 @@
             </div>
          </div>
 
-        <div class="order-detail__uniforms" v-if="orderUniforms.length !== 0">
-            <h2>Uniformes de la orden</h2>
-            <table class="order-detail__uniforms-table">
+        <div class="order-detail-uniforms" v-if="orderUniforms.length !== 0">
+            <div class="order-detail-uniforms__header">
+                <h2>Uniformes de la orden</h2>
+                <button @click="addUniform">Agregar nuevo</button>
+            </div>
+            <table class="order-detail-uniforms__table">
                 <tr>
                     <th>Número</th>
                     <th>Leyenda</th>
@@ -35,30 +38,83 @@
                     <td>{{ uniform.legend }}</td>
                     <td>{{ uniform.size }}</td>
                     <td>
-                        <button class="btn-blue">Editar</button>
+                        <button class="btn-blue" @click="editUniform(uniform)">Editar</button>
                         <button class="btn-red">Eliminar</button>
                     </td>
                 </tr>
             </table>
         </div>
+
+        <!-- Modal for form -->
+        <base-modal v-if="showForm" @closeForm="cancelForm">
+            <base-form @submitClicked="submitForm" @formCanceled="cancelForm">
+                <template v-slot:form-legend>
+                    <legend>{{ formLegend }}</legend>
+                </template>
+
+                <template v-slot:form-body>
+                    <div class="form-field">
+                        <label for="number">número:</label>
+                        <input type="number" v-model="uniform.number" />
+                        <p class="form-error" v-if="formErrors.number">{{ formErrors.number[0] }}</p>
+                    </div>
+                    <div class="form-field">
+                        <label for="legend">leyenda:</label>
+                        <input type="text" v-model="uniform.legend" />
+                        <p class="form-error" v-if="formErrors.legend">{{ formErrors.legend[0] }}</p>
+                    </div>
+                    <div class="form-field">
+                        <label for="size">size:</label>
+                        <select name="size" id="size" v-model="uniform.size">
+                            <option value="CH">CH</option>
+                            <option value="M">M</option>
+                            <option value="G">G</option>
+                        </select>
+                        <p class="form-error" v-if="formErrors.size">{{ formErrors.size[0] }}</p>
+                    </div>
+                </template>
+            </base-form>
+        </base-modal>
        
     </section>
 </template>
 
 <script>
+import performApiCall from '../../apiFactory.js';
+
 export default {
     data() {
         return {
             order: null,
             orderUniforms: [],
+            uniform: {
+                order_id: null,
+                legend: '',
+                number: '',
+                size: ''
+            },
+            previousUniform: {},
             error: {
                 state: false,
                 message: ''
-            }
+            },
+            showForm: false,
+            formMode: 'create',
+            formErrors: {}
         }
     },
     created() {
         this.getOrderDetail();
+    },
+    computed: {
+        formLegend() {
+            return this.formMode === 'create' ? 'Agregar nuevos uniformes' : 'Editar uniforme existente';
+        }
+    },
+    watch: {
+        order(val) {
+            this.uniform.order_id = val.id;
+        }
     },
     methods: {
         async getOrderDetail() {
@@ -85,6 +141,47 @@ export default {
                 this.error.state = false;
                 this.error.message = responseData.error;
             }
+        },
+        addUniform() {
+            this.formMode = 'create';
+            this.showForm = true;
+        },
+        editUniform(uniform) {
+            this.uniform = uniform;
+            this.formMode = 'edit';
+            this.showForm = true;
+            this.previousUniform = JSON.parse(JSON.stringify(uniform));
+        },
+        cancelForm() {
+            this.showForm = false;
+            this.resetUniformValues();
+        },
+        resetUniformValues() {
+            this.uniform = {
+                order_id: null,
+                legend: '',
+                number: '',
+                size: ''
+            }
+            this.formErrors = {};
+        },
+        submitForm() {
+            const url = this.formMode === 'edit' ? `/api/uniforms/${this.uniform.id}` : `/api/uniforms`;
+            const method = this.formMode === 'edit' ? 'PUT' : 'POST';
+            const auth = true;
+            const body = JSON.stringify(this.uniform);
+            const contenType = 'aplication/json';
+
+            performApiCall(url, method, auth, body, contenType)
+            .then(response => {
+                if (response.id) {
+                    this.orderUniforms.push(this.uniform);
+                    this.showForm = false;
+                    this.resetUniformValues();
+                } else if (response.errors) {
+                    this.formErrors = response.errors;
+                }
+            })
         }
     }
 
@@ -123,12 +220,12 @@ h1 {
     letter-spacing: 5px;
 }
 
-.order-detail__uniforms h2 {
+.order-detail-uniforms h2 {
     text-align: center;
     margin: 40px 0px;
 }
 
-.order-detail__uniforms-table {
+.order-detail-uniforms__table {
     font-size: 1.2em;
     text-transform: capitalize;
     width: 100%;
@@ -153,6 +250,16 @@ td:last-child button {
 
 img {
     width: 100%;
+}
+
+.order-detail-uniforms__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.order-detail-uniforms__header button {
+    margin-left: 10px;
 }
 
 </style>

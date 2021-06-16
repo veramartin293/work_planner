@@ -118,6 +118,7 @@ export default {
                 date: '',
                 is_in_progress: false
             }
+            this.formErrors = {};
         },
         toggleFormState() {
             this.showForm = this.showForm === false ? true : false;
