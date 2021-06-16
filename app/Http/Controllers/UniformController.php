@@ -7,6 +7,8 @@ use App\Http\Requests\UniformRequest;
 use App\Models\Uniform;
 use Exception;
 
+use function GuzzleHttp\Psr7\try_fopen;
+
 class UniformController extends Controller
 {
     /**
@@ -78,9 +80,29 @@ class UniformController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UniformRequest $request, $id)
     {
-        //
+        try {
+            // Get the unfiform
+            $uniform = Uniform::find($id);
+
+            // If uniform exists; then update its fields
+            if ($uniform) {
+                $uniform->legend = $request->legend;
+                $uniform->number = $request->number;
+                $uniform->size = $request->size;
+
+                $uniform->save();
+
+                return response($uniform, 200);
+            } else {
+                $res = ['error' => 'El uniforme solicitado no existe'];
+                return response($res, 200);
+            }
+        } catch(Exception $e) {
+            $res['error'] = 'Ocurrió un error en la base de datos, inténtelo de nuevo más tarde';
+            return response($res, 400);
+        }
     }
 
     /**
@@ -91,6 +113,19 @@ class UniformController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $uniform = Uniform::find($id);
+
+            if ($uniform) {
+                $uniform->delete();
+                return response($uniform, 200);
+            } else {
+                $res = ['error' => 'El uniforme solicitado no existe'];
+                return response($res, 200);
+            }
+        } catch (Exception $e) {
+            $res = ['error' => 'Hubo un problema con la base de datos, intentelo más tarde.'];
+            return response($res, 400);
+        }
     }
 }

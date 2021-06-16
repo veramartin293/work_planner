@@ -27,6 +27,8 @@ Route::group(['middleware' => ['auth:sanctum', 'checkUserRole']], function () {
 
     // Uniform routes
     Route::post('/uniforms', [UniformController::class, 'store']);
+    Route::put('/uniforms/{id}', [UniformController::class, 'update']);
+    Route::delete('/uniforms/{id}', [UniformController::class, 'destroy']);
 });
 
 // Protected routes just by authorization
@@ -36,7 +38,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/authenticated', [AuthController::class, 'getAuthenticated']);
 });
 
-// Public routes
+// Public routes //
 
 // Order routes
 Route::get('/orders', [OrderController::class, 'index']);

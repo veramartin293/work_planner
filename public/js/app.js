@@ -15603,8 +15603,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.previousUniform = JSON.parse(JSON.stringify(uniform));
     },
     cancelForm: function cancelForm() {
+      var _this3 = this;
+
       this.showForm = false;
       this.resetUniformValues();
+
+      if (this.formMode === 'edit') {
+        var uniform = this.orderUniforms.find(function (el) {
+          return el.id === _this3.previousUniform.id;
+        });
+        uniform.legend = this.previousUniform.legend;
+        uniform.number = this.previousUniform.number;
+        uniform.size = this.previousUniform.size;
+      }
     },
     resetUniformValues: function resetUniformValues() {
       this.uniform = {
@@ -15616,7 +15627,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.formErrors = {};
     },
     submitForm: function submitForm() {
-      var _this3 = this;
+      var _this4 = this;
 
       var url = this.formMode === 'edit' ? "/api/uniforms/".concat(this.uniform.id) : "/api/uniforms";
       var method = this.formMode === 'edit' ? 'PUT' : 'POST';
@@ -15625,13 +15636,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var contenType = 'aplication/json';
       (0,_apiFactory_js__WEBPACK_IMPORTED_MODULE_1__.default)(url, method, auth, body, contenType).then(function (response) {
         if (response.id) {
-          _this3.orderUniforms.push(_this3.uniform);
+          _this4.orderUniforms.push(_this4.uniform);
 
-          _this3.showForm = false;
+          _this4.showForm = false;
 
-          _this3.resetUniformValues();
+          _this4.resetUniformValues();
         } else if (response.errors) {
-          _this3.formErrors = response.errors;
+          _this4.formErrors = response.errors;
         }
       });
     }

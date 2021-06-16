@@ -155,6 +155,12 @@ export default {
         cancelForm() {
             this.showForm = false;
             this.resetUniformValues();
+            if (this.formMode === 'edit') {
+                const uniform = this.orderUniforms.find (el => el.id === this.previousUniform.id);
+                uniform.legend = this.previousUniform.legend;
+                uniform.number = this.previousUniform.number;
+                uniform.size = this.previousUniform.size;
+            }
         },
         resetUniformValues() {
             this.uniform = {
