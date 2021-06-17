@@ -5,7 +5,7 @@
             <order-card v-for="order in orders" :key="order.id"
             :order="order" @editClicked="editOrder" @deleteClicked="deleteOrder"></order-card>
         </div>
-        <button @click="addNewOrder">Nueva</button>
+        <button class="new" @click="addNewOrder">Nueva</button>
 
         <!-- Modal for form -->
         <base-modal v-if="showForm" @closeForm="cancelForm">
@@ -30,13 +30,30 @@
                         <p class="form-error" v-if="formErrors.typography">{{ formErrors.typography[0] }}</p>
                     </div>
                     <div class="form-field">
-                        <label for="colors">colors:</label>
-                        <input type="text" name="colors" id="colors" v-model="order.colors">
+
+                        <div class="color-selection">
+                            <label class="color-selection__label" for="colors">colors:</label>
+
+                            <div class="color-selection__qty">
+                                <button @click="modifyColorQty(-1)">-</button>
+                                <div>{{ colorArray.length }}</div>
+                                <button @click="modifyColorQty(1)">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="color-picker-container">
+                            <input type="color" 
+                            v-for="(color, index) in colorArray" 
+                            :key="index" 
+                            v-model="colorArray[index]"
+                            >
+                        </div>
+
                         <p class="form-error" v-if="formErrors.colors">{{ formErrors.colors[0] }}</p>
                     </div>
                     <div class="form-field" v-if="formMode === 'create'">
                         <label for="logo">upload a logo:</label>
-                        <input type="file" name="logo" id="logo" @change="onFileSelected">
+                        <input class="input-file" type="file" name="logo" id="logo" @change="onFileSelected">
                         <p class="form-error" v-if="formErrors.logo">{{ formErrors.logo[0] }}</p>
                     </div>
                     <div class="form-field">
@@ -74,6 +91,8 @@ export default {
                 date: '',
                 is_in_progress: false
             },
+            colorArray: [],
+
             previousOrder: {},
             showForm: false,
             formMode: 'create',
@@ -88,7 +107,26 @@ export default {
             return this.formMode === 'create' ? 'Crear nueva orden' : 'Editar orden'
         }
     },
+    watch: {
+        colorArray: {
+            handler() {
+                this.order.colors = this.colorArray.join('/');
+            },
+            deep: true
+        }
+    },
     methods: {
+        modifyColorQty(qty) {
+            if (qty >= 1) {
+                this.colorArray.push('#000000');
+            } else {
+                this.colorArray.pop();
+            }
+
+            if (this.colorArray.length > 4) {
+                this.colorArray.pop();
+            }
+        },
         async getAllOrders() {
             const response = await fetch('/api/orders');
             const responseData = await response.json();
@@ -114,11 +152,13 @@ export default {
                 team_name: '',
                 typography: '',
                 colors: '',
+                colors_array: [],
                 logo: null,
                 date: '',
                 is_in_progress: false
             }
             this.formErrors = {};
+            this.colorArray = [];
         },
         toggleFormState() {
             this.showForm = this.showForm === false ? true : false;
@@ -141,12 +181,12 @@ export default {
         },
         editOrder(order) {
             this.order = order;
+            this.colorArray = this.order.colors.split('/');
             this.previousOrder = JSON.parse(JSON.stringify(order));
             this.formMode = 'edit';
             this.toggleFormState();
         },
         deleteOrder(order) {
-            console.log('Deleting order', order);
             performApiCall(`/api/orders/${order.id}`, 'DELETE', true, {})
             .then(response => {
                 if (response.id) {
@@ -192,11 +232,44 @@ h1 {
     grid-template-columns: repeat(3, 1fr);
 }
 
-button {
+button.new {
     font-size: 1.2em;
     position: fixed;
     bottom: 0;
     right: 0;
     margin: 50px;
+}
+
+.color-selection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.color-selection__qty {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.color-selection__qty button {
+    width: 20px;
+    text-align: center;
+}
+
+.color-selection__qty div {
+    padding: 0px 5px;
+}
+
+.color-picker-container {
+    display: flex;
+}
+
+.color-picker-container input {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    background-color: inherit;
+    border: none;
 }
 </style>

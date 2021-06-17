@@ -32,6 +32,8 @@ export default {
 
 .modal-content {
     background-color: white;
+    -webkit-box-shadow: 0px 0px 9px 1px #000000; 
+    box-shadow: 0px 0px 9px 1px #000000;
     width: 30%;
     margin: 0 auto;
     padding: 20px 40px;

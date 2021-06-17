@@ -15,5 +15,6 @@ footer {
     text-align: center;
     font-style: italic;
     padding: 40px 0px;
+    width: 100%;
 }
 </style>

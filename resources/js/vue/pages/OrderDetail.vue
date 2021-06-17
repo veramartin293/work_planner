@@ -15,7 +15,12 @@
                 <h2>{{ order.team_name }}</h2>
                 <p><strong>Fecha de creación: </strong>{{ order.date }}</p>
                 <p><strong>Tipografía: </strong>{{ order.typography }}</p>
-                <p><strong>Colores: </strong>{{ order.colors }}</p>
+                <p><strong>Colores:</strong></p>
+                <div class="colors-display">
+                    <div class="colors-display__element" v-for="(color, index) in orderColorsArray" 
+                    :key="index"
+                    :style="{background: color}"></div>
+                </div>
                 <p><strong>Estatus: </strong><em>{{ order.is_in_progress === true ? 'proceso' : 'finalizada'}}</em></p>
             </div>
          </div>
@@ -91,7 +96,8 @@ export default {
                 order_id: null,
                 legend: '',
                 number: '',
-                size: ''
+                size: '',
+                id: null
             },
             previousUniform: {},
             error: {
@@ -109,6 +115,9 @@ export default {
     computed: {
         formLegend() {
             return this.formMode === 'create' ? 'Agregar nuevos uniformes' : 'Editar uniforme existente';
+        },
+        orderColorsArray() {
+            return this.order.colors.split('/');
         }
     },
     watch: {
@@ -169,6 +178,7 @@ export default {
                 uniform.legend = this.previousUniform.legend;
                 uniform.number = this.previousUniform.number;
                 uniform.size = this.previousUniform.size;
+                uniform.id = this.previousUniform.id;
             }
         },
         resetUniformValues() {
@@ -176,7 +186,8 @@ export default {
                 order_id: this.order.id,
                 legend: '',
                 number: '',
-                size: ''
+                size: '',
+                id: null
             }
             this.formErrors = {};
         },
@@ -190,12 +201,14 @@ export default {
             performApiCall(url, method, auth, body, contenType)
             .then(response => {
                 if (response.id) {
-                    this.orderUniforms.push(this.uniform);
                     if (this.formMode === 'edit') {
                         this.showForm = false;
+                    } else if (this.formMode === 'create') {
+                        this.orderUniforms.push(response);
                     }
                     this.resetUniformValues();
                 } else if (response.errors) {
+                    console.log(response.errors);
                     this.formErrors = response.errors;
                 }
             })
@@ -279,4 +292,14 @@ img {
     margin-left: 10px;
 }
 
+.colors-display {
+    display: flex;
+}
+
+.colors-display__element {
+    height: 50px;
+    width: 50px;
+    margin-right: 5px;
+    border: 1px solid black;
+}
 </style>
