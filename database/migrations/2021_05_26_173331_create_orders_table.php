@@ -16,9 +16,10 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('team_name', 30);
-            $table->string('typography', 30);
-            $table->string('colors');
-            $table->string('logo', 30);
+            $table->string('contact_name', 30);
+            $table->string('contact_phone', 10);
+            $table->string('image', 255)->nullable();
+            // $table->string('logo', 30);
             $table->date('date');
             $table->boolean('is_in_progress');
             $table->timestamps();

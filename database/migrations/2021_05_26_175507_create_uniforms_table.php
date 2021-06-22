@@ -16,8 +16,8 @@ class CreateUniformsTable extends Migration
         Schema::create('uniforms', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
-            $table->string('legend', 30);
             $table->string('number', 5);
+            $table->string('legend', 30);
             $table->enum('size', ['ECH','CH', 'M', 'G', 'EG', 'EEG']);
             $table->timestamps();
 

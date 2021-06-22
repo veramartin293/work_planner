@@ -25,11 +25,10 @@ class OrderRequest extends FormRequest
     {
         return [
             'team_name' => 'required|string',
-            'typography' => 'required|string',
-            'colors' => 'required|string',
-            'logo' => 'required|file',
+            'contact_name' => 'required|string',
+            'contact_phone' => 'required|string',
             'date' => 'required|date',
-            'is_in_progress' => 'required|string'
+            'is_in_progress' => 'required|boolean'
         ];
     }
 

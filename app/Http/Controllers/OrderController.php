@@ -36,17 +36,13 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {       
         try {
-            // Store the file
-            $filePath = $request->file('logo')->store('order_images', 'public');
-
             // Create the order
             $order = new Order;
             $order->team_name = $request->team_name;
-            $order->typography = $request->typography;
-            $order->colors = $request->colors;
-            $order->logo = $filePath;
+            $order->contact_name = $request->contact_name;
+            $order->contact_phone = $request->contact_phone;
             $order->date = $request->date;
-            $order->is_in_progress = $request->is_in_progress === 'true' ? true : false;
+            $order->is_in_progress = $request->is_in_progress;
 
             // Save the order in database
             $order->save();
